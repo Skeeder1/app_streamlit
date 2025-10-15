@@ -1,4 +1,19 @@
-🚀 Installation
+# 🐦 Twitter Sentiment Analyzer
+
+Application web interactive pour analyser le **sentiment de tweets** avec l’IA (Streamlit + API).
+
+## ✨ Fonctionnalités
+
+* 🔮 Prédiction de sentiment en temps réel
+* 🔍 Explicabilité des décisions avec **LIME**
+* 📊 Interface moderne et intuitive
+* 📚 Exemples de tweets intégrés
+
+---
+
+## 🚀 Installation
+
+```bash
 # 1) Installer les dépendances
 pip install -r requirements.txt
 
@@ -8,11 +23,15 @@ cp .env.example .env
 
 # 3) Lancer l'application
 streamlit run app.py
+```
 
+L’application s’ouvrira sur : `http://localhost:8501`
 
-L’application s’ouvrira sur : http://localhost:8501
+---
 
-📁 Structure du projet
+## 📁 Structure du projet
+
+```text
 streamlit/
 ├─ app.py                 # Application principale (Streamlit)
 ├─ requirements.txt       # Dépendances
@@ -31,67 +50,90 @@ streamlit/
 │
 └─ tests/                 # Tests unitaires
    └─ test_api_client.py
+```
 
-⚙️ Configuration
+---
 
-Créer (ou éditer) un fichier .env à la racine :
+## ⚙️ Configuration
 
+Créer (ou éditer) un fichier `.env` à la racine :
+
+```env
 API_URL=http://localhost:8000
 API_TIMEOUT=30
+```
 
+> `API_URL` : endpoint de l’API de prédiction.
+> `API_TIMEOUT` : délai max en secondes pour les requêtes HTTP.
 
-API_URL : endpoint de l’API de prédiction.
-API_TIMEOUT : délai max en secondes pour les requêtes HTTP.
+Pour personnaliser l’interface (exemples de tweets, thème, etc.), modifiez `src/config.py`.
 
-Pour personnaliser l’interface (exemples de tweets, thème, etc.), modifiez src/config.py.
+---
 
-🔗 Intégration API
+## 🔗 Intégration API
 
 L’application consomme une API avec les endpoints suivants :
 
-Health check
+### Health check
 
-GET /
+**GET /**
 
+```json
 {"status": "ok"}
+```
 
-Prédiction de sentiment
+### Prédiction de sentiment
 
-POST /predict
+**POST /predict**
 
-Requête
+**Requête**
 
+```json
 {"text": "I love this!"}
+```
 
+**Réponse**
 
-Réponse
-
+```json
 {"sentiment": "positive", "confidence": 0.95}
+```
 
-Explication LIME
+### Explication LIME
 
-POST /explain
+**POST /explain**
 
-Requête
+**Requête**
 
+```json
 {"text": "I love this!"}
+```
 
+**Réponse**
 
-Réponse
-
+```json
 {"explanation": "...", "image": "..."}
+```
 
-🧪 Tests
+---
+
+## 🧪 Tests
+
+```bash
 # Lancer l’ensemble des tests
 pytest tests/
 
 # Couverture de code
 pytest --cov=src tests/
+```
 
-👥 Auteur
+---
 
-ESIEA MLOps Team — Skeeder1
+## 👥 Auteur
 
-📜 Licence
+**ESIEA MLOps Team** — [Skeeder1](https://github.com/Skeeder1)
 
-MIT — voir le fichier LICENSE
+---
+
+## 📜 Licence
+
+MIT — voir le fichier [LICENSE](LICENSE)
