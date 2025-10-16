@@ -59,7 +59,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # URL de l'API (à configurer)
-API_URL = st.sidebar.text_input("URL de l'API", "http://localhost:8000")
+API_URL = st.sidebar.text_input("URL de l'API", "http://localhost:8003")
 
 # Titre principal
 st.markdown("""

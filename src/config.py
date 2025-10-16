@@ -12,7 +12,7 @@ class Config:
     """Application configuration"""
     
     # API Configuration
-    API_URL = os.getenv("API_URL", "http://localhost:8000")
+    API_URL = os.getenv("API_URL", "http://localhost:8003")
     API_TIMEOUT = int(os.getenv("API_TIMEOUT", "30"))
     
     # Application Settings

@@ -56,7 +56,7 @@ def get_custom_css() -> str:
     
     /* Info box */
     .info-box {{
-        background-color: #dbeafe;
+        background-color: #1098d6;
         border-left: 4px solid #3b82f6;
         padding: 1rem;
         border-radius: 5px;
