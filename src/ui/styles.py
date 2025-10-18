@@ -52,11 +52,12 @@ def get_custom_css() -> str:
         border-radius: 5px;
         margin-bottom: 1rem;
         animation: slideIn 0.3s ease-in;
+        color: #333333; /* Changed text color to dark gray */
     }}
     
     /* Info box */
     .info-box {{
-        background-color: #1098d6;
+        background-color: #87CEEB; /* Changed to a lighter blue */
         border-left: 4px solid #3b82f6;
         padding: 1rem;
         border-radius: 5px;
