@@ -20,12 +20,6 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environment
-venv/
-env/
-ENV/
-.venv
-
 # IDEs
 .vscode/
 .idea/
@@ -36,6 +30,7 @@ ENV/
 
 # Streamlit
 .streamlit/secrets.toml
+.streamlit/
 
 # Environment variables
 .env

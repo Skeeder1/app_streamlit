@@ -3,6 +3,7 @@ Twitter Sentiment Analyzer - Main Application
 A Streamlit app for analyzing tweet sentiment using AI and LIME explainability
 """
 import streamlit as st
+from streamlit.components.v1 import html as st_html
 from src.config import Config
 from src.api_client import APIClient
 from src.ui import (
@@ -169,13 +170,14 @@ if explain_button:
             else:
                 st.success("✅ Explication générée !")
                 
-                # Display explanation
-                if "explanation" in result:
+                # Display explanation list
+                if "explanation" in result and result["explanation"]:
                     st.subheader("📊 Explication LIME")
                     st.write(result["explanation"])
                 
+                # Display LIME HTML visualization in iframe (executes JS properly)
                 if "html_explanation" in result:
-                    st.markdown(result["html_explanation"], unsafe_allow_html=True)
+                    st_html(result["html_explanation"], height=900, scrolling=True)
                 
                 if "image" in result:
                     st.image(result["image"], caption="Visualisation LIME")
