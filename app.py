@@ -29,6 +29,16 @@ st.markdown(get_custom_css(), unsafe_allow_html=True)
 if 'tweet_input' not in st.session_state:
     st.session_state.tweet_input = ""
 
+
+def clear_tweet():
+    """Clear the tweet input in session state."""
+    st.session_state.tweet_input = ""
+
+
+def load_example(example_text: str):
+    """Load an example tweet into session state."""
+    st.session_state.tweet_input = example_text
+
 # Sidebar configuration
 st.sidebar.title("⚙️ Configuration")
 api_url = st.sidebar.text_input(
@@ -62,12 +72,12 @@ tweet_text = st.text_area(
     placeholder=f"Tapez votre tweet ici... ({Config.MAX_TWEET_LENGTH} caractères max)",
     max_chars=Config.MAX_TWEET_LENGTH,
     height=150,
-    key="tweet_input_area",
+    key="tweet_input",
     label_visibility="collapsed"
 )
 
-# Update session state
-st.session_state.tweet_input = tweet_text
+# Read the current value from session state (widget updates it automatically)
+tweet_text = st.session_state.tweet_input
 
 # Character counter
 render_character_counter(tweet_text, Config.MAX_TWEET_LENGTH)
@@ -84,25 +94,25 @@ with col1:
     predict_button = st.button(
         "🔮 Prédire le Sentiment",
         use_container_width=True,
-        type="primary"
+        type="primary",
+        key="predict_button"
     )
 
 with col2:
     explain_button = st.button(
         "🔍 Expliquer avec LIME",
-        use_container_width=True
+        use_container_width=True,
+        key="explain_button"
     )
 
 with col3:
+    # use on_click callback so session_state is modified before rerun
     clear_button = st.button(
         "🗑️ Effacer",
-        use_container_width=True
+        use_container_width=True,
+        on_click=clear_tweet,
+        key="clear_button"
     )
-
-# Handle clear button
-if clear_button:
-    st.session_state.tweet_input = ""
-    st.rerun()
 
 # Handle predict button
 if predict_button:
@@ -153,15 +163,22 @@ if explain_button:
             with render_loading_message("🔍 Génération de l'explication LIME..."):
                 result = api_client.explain_prediction(tweet_text)
             
-            st.success("✅ Explication générée !")
-            
-            # Display explanation
-            if "explanation" in result:
-                st.subheader("📊 Explication LIME")
-                st.write(result["explanation"])
-            
-            if "image" in result:
-                st.image(result["image"], caption="Visualisation LIME")
+            # Check if it's a warning response
+            if result.get("warning", False):
+                st.warning(result.get("html_explanation", "Le texte est trop court pour générer une explication"))
+            else:
+                st.success("✅ Explication générée !")
+                
+                # Display explanation
+                if "explanation" in result:
+                    st.subheader("📊 Explication LIME")
+                    st.write(result["explanation"])
+                
+                if "html_explanation" in result:
+                    st.markdown(result["html_explanation"], unsafe_allow_html=True)
+                
+                if "image" in result:
+                    st.image(result["image"], caption="Visualisation LIME")
                 
         except Exception as e:
             st.error(f"❌ Erreur lors de l'explication: {str(e)}")
@@ -175,9 +192,12 @@ st.sidebar.title("📚 Exemples de tweets")
 st.sidebar.markdown("Cliquez sur un exemple pour l'utiliser :")
 
 for i, example in enumerate(Config.TWEET_EXAMPLES, 1):
-    if st.sidebar.button(f"Exemple {i}", key=f"example_{i}"):
-        st.session_state.tweet_input = example
-        st.rerun()
+    st.sidebar.button(
+        f"Exemple {i}",
+        key=f"example_{i}",
+        on_click=load_example,
+        args=(example,)
+    )
 
 # Sidebar - About
 st.sidebar.markdown("---")

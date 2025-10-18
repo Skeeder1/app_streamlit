@@ -140,7 +140,7 @@ def get_custom_css() -> str:
     
     /* Sidebar styling */
     .css-1d391kg {{
-        background-color: #f8fafc;
+        background-color: #fdfdfd; /* Changed to a lighter gray */
     }}
     
     /* Hide Streamlit branding */
